@@ -5,13 +5,18 @@ services:
   - docker
 
 before_install:
-  - docker build -t bryanesmith/complex-client-dev -f ./client/Dockerfile.dev ./client
+  - docker build -t bryanesmith/complex-docker-client-dev -f ./client/Dockerfile.dev ./client
 
 script:
   - docker run -e CI=true bryanesmith/complex-client-dev npm test
 
 after_success:
-  - docker build -t bryanesmith/complex-client ./client
-  - docker build -t bryanesmith/complex-nginx ./nginx
-  - docker build -t bryanesmith/complex-server ./server
-  - docker build -t bryanesmith/complex-worker ./worker
+  - docker build -t bryanesmith/complex-docker-client ./client
+  - docker build -t bryanesmith/complex-docker-nginx ./nginx
+  - docker build -t bryanesmith/complex-docker-server ./server
+  - docker build -t bryanesmith/complex-docker-worker ./worker
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker push bryanesmith/complex-docker-client
+  - docker push bryanesmith/complex-docker-nginx
+  - docker push bryanesmith/complex-docker-server
+  - docker push bryanesmith/complex-docker-worker
