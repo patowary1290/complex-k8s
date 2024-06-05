@@ -1,0 +1,35 @@
+{
+    "AWSEBDockerrunVersion": 2,
+    "containerDefinitions": [
+        {
+            "name": "client",
+            "image": "bryanesmith/complex-docker-client",
+            "hostname": "client",
+            "essential": false
+        },{
+            "name": "server",
+            "image": "bryanesmith/complex-docker-server",
+            "hostname": "api",
+            "essential": false
+        },{
+            "name": "worker",
+            "image": "bryanesmith/complex-docker-worker",
+            "hostname": "worker",
+            "essential": false
+        },{
+            "name": "nginx",
+            "image": "bryanesmith/complex-docker-nginx",
+            "hostname": "nginx", 
+            "essential": true, 
+            "portMappings": [
+                {
+                    "hostPort": 80,
+                    "containerPort": 80
+                }
+            ],
+            "links": [
+                "client", "server"
+            ]
+        }
+    ]
+}
